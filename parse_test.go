@@ -51,4 +51,40 @@ func TestParse(t *testing.T) {
 			t.Error(i, test.S, v, test.W)
 		}
 	}
+
+	t.Run("0h", func(t *testing.T) {
+		span := timespan.MustParse("0h")
+		epoch := time.Unix(0, 0)
+		tests := []time.Time{
+			epoch,
+			epoch.Add(time.Hour - 1),
+			epoch.Add(time.Hour),
+			epoch.Add(23*time.Hour - 1),
+			epoch.Add(23 * time.Hour),
+		}
+		for i, test := range tests {
+			r := span.Contains(test)
+			if r != false {
+				t.Error(i, span, test)
+			}
+		}
+	})
+
+	t.Run("24h", func(t *testing.T) {
+		span := timespan.MustParse("24h")
+		epoch := time.Unix(0, 0)
+		tests := []time.Time{
+			epoch,
+			epoch.Add(time.Hour - 1),
+			epoch.Add(time.Hour),
+			epoch.Add(23*time.Hour - 1),
+			epoch.Add(23 * time.Hour),
+		}
+		for i, test := range tests {
+			r := span.Contains(test)
+			if r != true {
+				t.Error(i, span, test)
+			}
+		}
+	})
 }

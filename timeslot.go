@@ -34,9 +34,14 @@ func NewTimeSlot(t time.Time, d time.Duration) *TimeSlot {
 		a: a,
 		b: b,
 	}
-	if a <= b {
+	switch {
+	case d == 0:
+		s.f = Never.Contains
+	case d >= 24*time.Hour:
+		s.f = Always.Contains
+	case a < b:
 		s.f = s.and
-	} else {
+	default:
 		s.f = s.or
 	}
 	return s

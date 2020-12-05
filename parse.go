@@ -50,6 +50,8 @@ func ParseTimeSlot(s string) (*TimeSlot, error) {
 	if len(m) != 2 {
 		if d, err := time.ParseDuration(s); err != nil {
 			return nil, err
+		} else if d == 0 {
+			return NewTimeSlot(time.Time{}, 0), nil
 		} else if d >= 24*time.Hour {
 			return NewTimeSlot(time.Time{}, 24*time.Hour), nil
 		}
